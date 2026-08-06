@@ -6,12 +6,14 @@
 /*   By: jgenin <jgenin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/25 14:09:39 by jgenin            #+#    #+#             */
-/*   Updated: 2026/07/26 12:35:10 by jgenin           ###   ########.fr       */
+/*   Updated: 2026/07/26 22:06:38 by jgenin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
+#include <stdlib.h>
 
+// initialises the tab with 0 caracters
 void	ft_init_tab(char **board, int size)
 {
 	int	row;
@@ -30,6 +32,7 @@ void	ft_init_tab(char **board, int size)
 	}
 }
 
+// displays all the digits on the board
 void	ft_display_digits(char **board, int size)
 {
 	int	row;
@@ -51,6 +54,7 @@ void	ft_display_digits(char **board, int size)
 	}
 }
 
+// check if the placement of the value is valid at a specific position
 int	ft_is_correct(char **board, int *pos, int size, char value)
 {
 	int	row;
@@ -72,4 +76,15 @@ int	ft_is_correct(char **board, int *pos, int size, char value)
 	}
 	board[pos[0]][pos[1]] = value;
 	return (1);
+}
+
+// free the board
+void	ft_free_board(char **board, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+		free(board[i++]);
+	free(board);
 }

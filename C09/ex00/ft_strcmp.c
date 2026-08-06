@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_find_next_prime.c                               :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrivet-p <lrivet-p@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 19:36:39 by lrivet-p          #+#    #+#             */
-/*   Updated: 2026/07/27 11:16:34 by lrivet-p         ###   ########lyon.fr   */
+/*   Created: 2026/07/17 13:56:48 by lrivet-p          #+#    #+#             */
+/*   Updated: 2026/07/19 09:32:26 by lrivet-p         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_find_next_prime(int nb)
+int	ft_strcmp(char *s1, char *s2)
 {
-	long	n;
+	int	tracker;
 
-	n = 2;
-	if (nb < 2)
-		return (2);
-	while (n * n <= nb)
+	tracker = 0;
+	while ((s1[tracker] == s2[tracker])
+		&& (s1[tracker] != '\0' && s2[tracker] != '\0'))
 	{
-		if (nb % n == 0)
-		{
-			nb++;
-			n = 2;
-		}
-		else
-			n++;
+		tracker++;
 	}
-	return (nb);
+	return (s1[tracker] - s2[tracker]);
 }
-
+/*
 #include <stdio.h>
-
 int	main(void)
 {
-	printf("%d", ft_find_next_prime(2022654));
-
+	char s1[] = "salem";
+	char s2[] = "salemp";
+	printf("%i", ft_strcmp(s1, s2));
 }
-
+*/

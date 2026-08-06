@@ -3,45 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   skyscraper_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhubert <qhubert@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: jgenin <jgenin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 08:33:07 by qhubert           #+#    #+#             */
-/*   Updated: 2026/07/26 10:12:14 by qhubert          ###   ########lyon.fr   */
+/*   Updated: 2026/07/26 23:30:34 by jgenin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-
 char	*ft_position(int row, int col, int size, char *argv);
-int	ft_skyscraper(char **board, int *pos, int size, char *nbs);
-int	ft_count_char(char c, char *str);
+void	ft_display_digits(char **board, int size);
 
-int	ft_check_c(int *counter, int nb_0, char pos, char *str)
-{
-	int	is_good;
-	int	i;
-	int	size;
-	char	max;
-
-	max = '0';
-	size = 0;
-	while (str[size])
-		size++;
-	i = 1;
-	while (i < size)
-	{
-		if (str[i] > max)
-		{
-			max = str[i];
-			(*counter)++;
-		}
-		i++;
-	}
-	is_good = *counter == (pos - nb_0 + 1);
-	*counter = 0;
-	return (is_good);
-}
-
+// Reverse the string given in parameter
 char	*ft_rv(char *str, int size)
 {
 	int		i;
@@ -58,40 +30,54 @@ char	*ft_rv(char *str, int size)
 	return (str);
 }
 
-int	ft_count_ordered(char *col, char *row, char *digits, int size)
+void	ft_cv_2(char *line, char *max, int comp[3])
 {
-	char	*pos;
-	int		c_c_0;
-	int		r_c_0;
-	int		count;
-
-	c_c_0 = ft_count_char('0', col);
-	r_c_0 = ft_count_char('0', row);
-	pos = ft_position(col[0], row[0], size, digits);
-	if (!pos)
-		return (0);
-	count = 0;
-	if (ft_check_c(&count, c_c_0, pos[0], col)
-			&& ft_check_c(&count, c_c_0, pos[1], ft_rv(col, size))
-			&& ft_check_c(&count, r_c_0, pos[2], row)
-			&& ft_check_c(&count, r_c_0, pos[3], ft_rv(row, size)))
+	if (line[comp[0]] == '0')
+		comp[2]++;
+	if (line[comp[0]] > *max)
 	{
-		free(pos);
-		return (1);
+		*max = line[comp[0]];
+		comp[1]++;
 	}
-	free(pos);
-	return (0);
+	comp[0]++;
 }
 
-int	ft_count_char(char c, char *str)
+// Count nb of skyscraper visible in a side
+// Return 1 if this is a valid number regarding argument
+// i = 0, asc = 1, zeros = 2
+int	ft_count_visible(char *line, int size, int reverse, char nb)
 {
-	int	i;
+	int		comp[3];
+	char	max;
 
-	i = 0;
-	while (*str)
-	{
-		if (*str++ == c)
-			i++;
-	}
-	return (i);
+	comp[0] = 0;
+	comp[1] = 0;
+	comp[2] = 0;
+	max = '0';
+	if (reverse)
+		line = ft_rv(line, size);
+	while (comp[0] < size)
+		ft_cv_2(line, &max, comp);
+	if (reverse)
+		ft_rv(line, size);
+	if (comp[2] > 0)
+		return (nb - '0' >= comp[1]);
+	return (nb - '0' == comp[1]);
+}
+
+// Return 1 if the position is valid regarding argument
+int	ft_is_ordered(char **board, char *nbs, int *pos, int size)
+{
+	char	col[10];
+	int		i;
+	int		is_ordered;
+
+	i = -1;
+	while (++i < size)
+		col[i] = board[i][pos[1]];
+	is_ordered = (ft_count_visible(col, size, 1, nbs[0])
+			&& ft_count_visible(col, size, 0, nbs[1])
+			&& ft_count_visible(board[pos[0]], size, 1, nbs[2])
+			&& ft_count_visible(board[pos[0]], size, 0, nbs[3]));
+	return (is_ordered);
 }

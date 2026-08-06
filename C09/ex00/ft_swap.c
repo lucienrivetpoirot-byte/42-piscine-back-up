@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_find_next_prime.c                               :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrivet-p <lrivet-p@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 19:36:39 by lrivet-p          #+#    #+#             */
-/*   Updated: 2026/07/27 11:16:34 by lrivet-p         ###   ########lyon.fr   */
+/*   Created: 2026/07/16 09:07:21 by lrivet-p          #+#    #+#             */
+/*   Updated: 2026/07/16 14:46:23 by lrivet-p         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_find_next_prime(int nb)
+void	ft_swap(int *a, int *b)
 {
-	long	n;
+	int	temp;
 
-	n = 2;
-	if (nb < 2)
-		return (2);
-	while (n * n <= nb)
-	{
-		if (nb % n == 0)
-		{
-			nb++;
-			n = 2;
-		}
-		else
-			n++;
-	}
-	return (nb);
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
-
+/*
 #include <stdio.h>
 
-int	main(void)
+int main (void)
 {
-	printf("%d", ft_find_next_prime(2022654));
+int	a	=	4;
+int	b	=	2;
 
+	ft_swap(&a, &b);
+
+	printf("%d,%d", a, b);
 }
-
+*/

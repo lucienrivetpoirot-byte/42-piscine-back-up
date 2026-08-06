@@ -1,13 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strs_to_tab.c                                   :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrivet-p <lrivet-p@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/29 11:17:18 by lrivet-p          #+#    #+#             */
-/*   Updated: 2026/07/29 11:26:06 by lrivet-p         ###   ########lyon.fr   */
+/*   Created: 2026/07/15 10:56:34 by lrivet-p          #+#    #+#             */
+/*   Updated: 2026/07/15 17:23:46 by lrivet-p         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-struct	s_stock_str *ft_strs_to_tab(int ac, char **av)
+#include <unistd.h>
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+/*
+int	main(void){
+ft_putchar('c');
+}
+*/

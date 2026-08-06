@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_find_next_prime.c                               :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrivet-p <lrivet-p@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/21 19:36:39 by lrivet-p          #+#    #+#             */
-/*   Updated: 2026/07/27 11:16:34 by lrivet-p         ###   ########lyon.fr   */
+/*   Created: 2026/07/20 14:06:38 by lrivet-p          #+#    #+#             */
+/*   Updated: 2026/07/20 14:06:46 by lrivet-p         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_find_next_prime(int nb)
+#include <unistd.h>
+
+void	ft_putstr(char *str)
 {
-	long	n;
+	int	tracker;
 
-	n = 2;
-	if (nb < 2)
-		return (2);
-	while (n * n <= nb)
+	tracker = 0;
+	while (str[tracker] != '\0')
 	{
-		if (nb % n == 0)
-		{
-			nb++;
-			n = 2;
-		}
-		else
-			n++;
+		write(1, &str[tracker], 1);
+		tracker++;
 	}
-	return (nb);
 }
-
-#include <stdio.h>
-
+/*
 int	main(void)
 {
-	printf("%d", ft_find_next_prime(2022654));
-
+	ft_putstr("ellllll primo");
 }
-
+*/

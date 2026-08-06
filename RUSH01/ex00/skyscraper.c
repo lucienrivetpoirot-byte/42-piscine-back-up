@@ -3,50 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   skyscraper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qhubert <qhubert@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: jgenin <jgenin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/26 08:32:57 by qhubert           #+#    #+#             */
-/*   Updated: 2026/07/26 08:50:09 by qhubert          ###   ########lyon.fr   */
+/*   Updated: 2026/07/26 23:29:30 by jgenin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 
+int		ft_is_correct(char **board, int *pos, int size, char value);
+int		ft_count_words(char *argv);
+int		ft_skyscraper(char **board, int *pos, int size, char *nbs);
+int		ft_is_ordered(char **board, char *nbs, int *pos, int size);
+char	*ft_position(int row, int col, int size, char *argv);
+void	ft_display_digits(char **board, int size);
+int		ft_check_tab(char **board);
 
-int	ft_is_correct(char **board, int *pos, int size, char value);
-int	ft_count_words(char *argv);
-int	ft_count_ordered(char *col, char *row, char *digits, int size);
-int	ft_skyscraper(char **board, int *pos, int size, char *nbs);
-
-int	ft_is_ordered(char **board, int *pos, char *digits)
-{
-	char	row[10];
-	char	col[10];
-	int		size;
-	int		i;
-
-	size = ft_count_words(digits);
-	row[0] = board[pos[0]][pos[1]];
-	i = 1;
-	while (i < size)
-	{
-		row[i] = board[pos[0]][i];
-		i++;
-	}
-	col[0] = board[pos[0]][pos[1]];
-	i = 1;
-	while (i < size)
-	{
-		col[i] = board[i][pos[1]];
-		i++;
-	}
-	if (ft_count_ordered(col, row, digits, size))
-		return (1);
-	return (0);
-}
-
+// Go to the next position on the board
 int	ft_change_pos(int *pos, int size)
 {
-	if (pos[0] >= size)
+	if (pos[0] == size - 1)
 	{
 		pos[0] = 0;
 		pos[1]++;
@@ -56,44 +33,57 @@ int	ft_change_pos(int *pos, int size)
 	return (0);
 }
 
+// Go back to the previous position on the board
 int	ft_restore_pos(int *pos, int size)
 {
 	if (pos[0] == 0)
 	{
-		pos[1]--;
 		pos[0] = size - 1;
+		pos[1]--;
 	}
 	else
 		pos[0]--;
 	return (0);
 }
 
-int	ft_try_digit(char **board, int *pos, int size, char *nbs)
+int	ff(int *pos, char **board, int size, char *j[2])
 {
-	int	i;
-
-	i = '1';
-	while (i <= '0' + size)
+	ft_change_pos(pos, size);
+	if (ft_skyscraper(board, pos, size, j[1]))
 	{
-		if (ft_is_correct(board, pos, size, i)
-				&& ft_is_ordered(board, pos, nbs))
-		{
-			ft_change_pos(pos, size);
-			if (ft_skyscraper(board, pos, size, nbs))
-				return (1);
-			ft_restore_pos(pos, size);
-			board[pos[0]][pos[1]] = '0';
-		}
-		i++;
+		free(j[0]);
+		return (1);
 	}
+	ft_restore_pos(pos, size);
 	return (0);
 }
 
+// Core of the backtracking
 int	ft_skyscraper(char **board, int *pos, int size, char *nbs)
 {
+	char	*clues;
+	int		i;
+	char	*j[2];
+
 	if (pos[1] == size)
 		return (1);
-	return (ft_try_digit(board, pos, size, nbs));
+	i = '1';
+	clues = ft_position(pos[0], pos[1], size, nbs);
+	if (!clues)
+		return (0);
+	while (i <= '0' + size)
+	{
+		if (ft_is_correct(board, pos, size, i)
+			&& ft_is_ordered(board, clues, pos, size))
+		{
+			j[0] = clues;
+			j[1] = nbs;
+			if (ff(pos, board, size, j))
+				return (1);
+		}
+		board[pos[0]][pos[1]] = '0';
+		i++;
+	}
+	free(clues);
+	return (0);
 }
-
-// ./rush01 "4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 2" | cat -e
